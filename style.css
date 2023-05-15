@@ -16,20 +16,33 @@ body {
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
   padding: 20px;
   width: 300px;
 }
 
-.visor {
+.display-container {
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   justify-content: flex-end;
-  align-items: center;
-  height: 70px;
+  overflow: hidden;
+  /* align-items: center; */
+  height: 100px;
   padding: 0 10px;
   background-color: #222;
   font-size: 40px;
   color: #fff;
+}
+
+.history-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.history {
+  color: gray;
+  font-size: 15px;
 }
 
 /* Estilos dos botões */
@@ -52,6 +65,10 @@ body {
 }
 
 .btn:hover {
+  background-color: #ccc;
+}
+
+.pressed {
   background-color: #ccc;
 }
 

@@ -1,97 +1,162 @@
-let num1 = 0;
+const resultNumber = document.querySelector('.result-number');
+const historyContainer = document.querySelector('.history-container');
+
+let acc = 0;
 let operator = '';
-let operation = '';
+let numberToBeInserted = '';
 let stringOperation = '';
 
-function display(op) {
-  const visor = document.querySelector('.visor');
-  visor.textContent = op;
+function display(string) {
+  resultNumber.textContent = string;
+}
+
+function createHistory(history) {
+  const novaDiv = document.createElement('div');
+  novaDiv.className = 'history';
+  novaDiv.textContent = history;
+  historyContainer.appendChild(novaDiv);
 }
 
 function clear() {
   stringOperation = '';
-  num1 = 0;
+  acc = 0;
   operator = '';
-  operation = '';
+  numberToBeInserted = '';
   display('0');
 }
 
 function calculate() {
-  const num2 = parseFloat(operation);
-  let result = 0;
+  const InsertedNumber = parseFloat(numberToBeInserted); // a string inserida se torna um number
   switch (operator) {
     case '+':
-      result = num1 + num2;
+      result = acc + InsertedNumber;
       break;
     case '-':
-      result = num1 - num2;
+      result = acc - InsertedNumber;
       break;
     case '×':
-      result = num1 * num2;
+      result = acc * InsertedNumber;
       break;
     case '÷':
-      result = num1 / num2;
+      result = acc / InsertedNumber;
       break;
   }
-  num1 = result;
-  operation = result.toString();
-  display(operation);
+  numberToBeInserted = '';
+  return result;
 }
 
-function handleNumberClick(number) {
+function handleNumberBtn(number) {
   stringOperation += number;
+  numberToBeInserted += number;
   display(stringOperation);
-  if (number === '←') {
-    // Se o número digitado for ← (apagar), remove o último dígito
-    operation = operation.slice(0, -1);
-    // display(operation);
-  } else {
-    // Caso contrário, adiciona o número normalmente
-    operation += number;
-    // display(operation);
-  }
 }
 
-function handleOperatorClick(op) {
+function handleOperatorBtn(op) {
   stringOperation += op;
-  display(stringOperation);
-  if (operator !== '') {
-    calculate();
+  if (
+    stringOperation === '+' ||
+    stringOperation === '-' ||
+    stringOperation === '÷' ||
+    stringOperation === '×'
+  ) {
+    numberToBeInserted = result;
+    stringOperation = `${result}${op}`;
   }
-  num1 = parseFloat(operation);
+  display(stringOperation);
+  acc = parseFloat(numberToBeInserted); //acumulador recebe o primeiro numero inserido
   operator = op;
-  operation = '';
+  numberToBeInserted = '';
 }
 
-function handleEqualsClick() {
-  calculate();
+function handleEqualsBtn() {
+  const calculatedResult = calculate();
+  display(calculatedResult);
+  const history = `${stringOperation} = ${result}`;
+  createHistory(history);
+  stringOperation = '';
+  // numberToBeInserted = '';
 }
 
-function deleteDigit() {
+function handleDeleteBtn() {
   // Remove o último dígito digitado
-  operation = operation.slice(0, -1);
-  display(operation);
-}
+  numberToBeInserted = numberToBeInserted.slice(0, -1);
+  stringOperation = stringOperation.slice(0, -1);
 
-const clearBtn = document.querySelector('.btn-clear');
-clearBtn.addEventListener('click', clear);
+  display(stringOperation);
+}
 
 const numberBtns = document.querySelectorAll('.btn-number');
 numberBtns.forEach((btn) => {
   btn.addEventListener('click', () => {
-    handleNumberClick(btn.textContent);
+    handleNumberBtn(btn.textContent);
+    btn.blur(); // Remover o foco do botão
   });
 });
 
 const operatorBtns = document.querySelectorAll('.btn-operator');
 operatorBtns.forEach((btn) => {
   btn.addEventListener('click', () => {
-    handleOperatorClick(btn.textContent);
+    handleOperatorBtn(btn.textContent);
+    btn.blur(); // Remover o foco do botão
   });
 });
 
 const equalsBtn = document.querySelector('.btn-equals');
-equalsBtn.addEventListener('click', handleEqualsClick);
+equalsBtn.addEventListener('click', () => {
+  handleEqualsBtn();
+  equalsBtn.blur(); // Remover o foco do botão
+});
 
 const deleteBtn = document.querySelector('.btn-delete');
-deleteBtn.addEventListener('click', deleteDigit);
+deleteBtn.addEventListener('click', () => {
+  handleDeleteBtn();
+  deleteBtn.blur(); // Remover o foco do botão
+});
+
+const clearBtn = document.querySelector('.btn-clear');
+clearBtn.addEventListener('click', () => {
+  clear();
+  clearBtn.blur(); // Remover o foco do botão
+});
+
+document.addEventListener('keydown', function (event) {
+  const key = event.key;
+
+  // Verifique qual tecla foi pressionada e execute a função correspondente
+  switch (key) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+      handleNumberBtn(key);
+      break;
+    case '+':
+    case '-':
+      handleOperatorBtn(key);
+      break;
+    case '/':
+      handleOperatorBtn('÷');
+      break;
+    case '*':
+      handleOperatorBtn('×');
+      break;
+    case '=':
+    case 'Enter':
+      handleEqualsBtn();
+      break;
+    case 'Backspace':
+      handleDeleteBtn();
+      break;
+    case 'Escape':
+    case 'c':
+    case 'C':
+      clear();
+      break;
+  }
+});
