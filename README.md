@@ -6,10 +6,12 @@ Esta é uma calculadora simples desenvolvida com HTML, CSS e JavaScript.<br/>
 
 ## Funcionalidades
 
-- Realizar operações básicas como adição, subtração, multiplicação e divisão
-- Exibir a operação e seu resultado no visor
-- Limpar o visor com o botão "C"
-- Apagar o último dígito digitado com o botão "←"
+- Realizar operações básicas como adição, subtração, multiplicação e divisão.
+- Exibir a operação e seu resultado no visor.
+- Exibir historico de operações.
+- Operável via teclado.
+- Limpar o visor com o botão "C".
+- Apagar o último dígito digitado com o botão "←".
 
 ## Como utilizar
 

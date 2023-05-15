@@ -42,7 +42,7 @@ function calculate() {
       break;
   }
   numberToBeInserted = '';
-  return result;
+  5;
 }
 
 function handleNumberBtn(number) {
@@ -69,8 +69,8 @@ function handleOperatorBtn(op) {
 }
 
 function handleEqualsBtn() {
-  const calculatedResult = calculate();
-  display(calculatedResult);
+  calculate();
+  display(result);
   const history = `${stringOperation} = ${result}`;
   createHistory(history);
   stringOperation = '';
